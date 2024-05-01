@@ -59,7 +59,6 @@ const clickNumber = (event) => {
     else {
         currentResult.textContent += number;
     }
-    flag = true;
 }
 
 const deleteCharacter = () => {
@@ -163,10 +162,13 @@ const computeResult = (event) => {
 
     operatorFlag = false;
     justComputed = true;
+    flag = true;
 
     if(chainCompute){
         currentCalculation.textContent = currentResult.textContent + `${operators[event.target.id]}`;
         operatorFlag = true;
+        flag = false;
+        operatorJustPressed = true;
     }
 }
 
