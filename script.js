@@ -33,6 +33,8 @@ const resetCalculator = () => {
     operatorFlag = false;
     operatorJustPressed = false;
     decimalJustPressed = false;
+    chainCompute = false;
+    justComputed = false;
 }
 
 const clickNumber = (event) => {
@@ -43,7 +45,11 @@ const clickNumber = (event) => {
         operatorJustPressed = false;
         return;
     }
-    if(currentResult.textContent==="0") {
+    if(justComputed){
+        currentResult.textContent = number;
+        justComputed = false;
+    }
+    else if(currentResult.textContent==="0") {
         currentResult.textContent = number;
     }
     else {
@@ -73,6 +79,10 @@ const negateNumber = () => {
 }
 
 const addOperator = (event) => {
+    if(operatorJustPressed){
+        currentCalculation.textContent = currentResult.textContent + operators[event.target.id];
+        return;
+    }
     if(!operatorFlag){
         if(decimalJustPressed){
             decimalJustPressed = false;
@@ -81,6 +91,11 @@ const addOperator = (event) => {
         currentCalculation.textContent = currentResult.textContent + operators[event.target.id];
         operatorFlag = true;
         operatorJustPressed = true;
+    }
+    else{
+        chainCompute = true;
+        computeResult(event);
+        chainCompute = false;
     }
 }
 
@@ -96,17 +111,22 @@ const addDecimalPoint = () => {
     }
 }
 
-const computeResult = () => {
+const computeResult = (event) => {
     let num1,num2,operator;
-    if((currentCalculation.textContent).includes("=")){
-        console.log((currentCalculation.textContent).split(" "))
-        num2 = parseFloat((currentCalculation.textContent).split(" ")[2])
+    if(currentCalculation.textContent==="") return;
+    if(chainCompute){
+        num1 = parseFloat((currentCalculation.textContent).split(" ")[0]);
+        num2 = parseFloat(currentResult.textContent);
+        operator = (currentCalculation.textContent).split(" ")[1];
+    }
+    else if((currentCalculation.textContent).includes("=")){
+        num2 = parseFloat((currentCalculation.textContent).split(" ")[2]);
         num1 = parseFloat(currentResult.textContent);
         operator = (currentCalculation.textContent).split(" ")[1];
         currentCalculation.textContent = `${num1} ${operator} ${num2} = `;
     }
     else{
-        num1 = parseFloat((currentCalculation.textContent).split(" ")[0])
+        num1 = parseFloat((currentCalculation.textContent).split(" ")[0]);
         num2 = parseFloat(currentResult.textContent);
         operator = (currentCalculation.textContent).split(" ")[1];
         currentCalculation.textContent += currentResult.textContent;
@@ -127,6 +147,12 @@ const computeResult = () => {
     }
 
     operatorFlag = false;
+    justComputed = true;
+
+    if(chainCompute){
+        currentCalculation.textContent = currentResult.textContent + `${operators[event.target.id]}`;
+        operatorFlag = true;
+    }
 }
 
 const numbers = {
@@ -166,5 +192,7 @@ const currentResult = document.querySelector(".result");
 let operatorFlag = false;
 let operatorJustPressed = false;
 let decimalJustPressed = false;
+let chainCompute = false;
+let justComputed = false;
 
 setEventListeners();
