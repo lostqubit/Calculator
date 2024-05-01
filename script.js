@@ -49,6 +49,7 @@ const clickNumber = (event) => {
         currentResult.textContent = number;
         justComputed = false;
     }
+    else if((currentResult.textContent).length>=10) return;
     else if(currentResult.textContent==="0") {
         currentResult.textContent = number;
     }
@@ -111,6 +112,21 @@ const addDecimalPoint = () => {
     }
 }
 
+const calculate = (operator,num1,num2) => {
+    if(operator==="x"){
+        return `${calculator.multiply(num1,num2)}`;
+    }
+    else if(operator==="+"){
+        return `${calculator.add(num1,num2)}`;
+    }
+    else if(operator==="-"){
+        return `${calculator.subtract(num1,num2)}`;
+    }
+    else{
+        return `${calculator.divide(num1,num2)}`;
+    }
+}
+
 const computeResult = (event) => {
     let num1,num2,operator;
     if(currentCalculation.textContent==="") return;
@@ -133,18 +149,15 @@ const computeResult = (event) => {
         currentCalculation.textContent += " = ";
     }
 
-    if(operator==="x"){
-        currentResult.textContent = `${calculator.multiply(num1,num2)}`;
-    }
-    else if(operator==="+"){
-        currentResult.textContent = `${calculator.add(num1,num2)}`;
-    }
-    else if(operator==="-"){
-        currentResult.textContent = `${calculator.subtract(num1,num2)}`;
+    const result = calculate(operator,num1,num2);
+    if(result.length>=10){
+        currentResult.textContent = (parseFloat(result).toExponential(5)).toString();
     }
     else{
-        currentResult.textContent = `${calculator.divide(num1,num2)}`;
+        currentResult.textContent = result;
     }
+
+
 
     operatorFlag = false;
     justComputed = true;
