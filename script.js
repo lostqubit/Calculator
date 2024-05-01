@@ -170,6 +170,8 @@ const computeResult = (event) => {
         flag = false;
         operatorJustPressed = true;
     }
+
+    decimalJustPressed = false;
 }
 
 const numbers = {
