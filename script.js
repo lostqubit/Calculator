@@ -15,6 +15,7 @@ const setEventListeners = () => {
                     button.addEventListener("click",negateNumber);
                     break;
                 case "evaluate":
+                    button.addEventListener("click",computeResult);
                     break;
                 case "decimal-point":
                     button.addEventListener("click",addDecimalPoint);
@@ -95,6 +96,39 @@ const addDecimalPoint = () => {
     }
 }
 
+const computeResult = () => {
+    let num1,num2,operator;
+    if((currentCalculation.textContent).includes("=")){
+        console.log((currentCalculation.textContent).split(" "))
+        num2 = parseFloat((currentCalculation.textContent).split(" ")[2])
+        num1 = parseFloat(currentResult.textContent);
+        operator = (currentCalculation.textContent).split(" ")[1];
+        currentCalculation.textContent = `${num1} ${operator} ${num2} = `;
+    }
+    else{
+        num1 = parseFloat((currentCalculation.textContent).split(" ")[0])
+        num2 = parseFloat(currentResult.textContent);
+        operator = (currentCalculation.textContent).split(" ")[1];
+        currentCalculation.textContent += currentResult.textContent;
+        currentCalculation.textContent += " = ";
+    }
+
+    if(operator==="x"){
+        currentResult.textContent = `${calculator.multiply(num1,num2)}`;
+    }
+    else if(operator==="+"){
+        currentResult.textContent = `${calculator.add(num1,num2)}`;
+    }
+    else if(operator==="-"){
+        currentResult.textContent = `${calculator.subtract(num1,num2)}`;
+    }
+    else{
+        currentResult.textContent = `${calculator.divide(num1,num2)}`;
+    }
+
+    operatorFlag = false;
+}
+
 const numbers = {
     zero: 0,
     one: 1,
@@ -112,6 +146,20 @@ const operators = {
     subtract: " - ",
     multiply: " x ",
     divide: " / ",
+}
+const calculator = {
+    add(num1,num2){
+        return num1 + num2;
+    },
+    subtract(num1,num2){
+        return num1-num2;
+    },
+    divide(num1,num2){
+        return num1/num2;
+    },
+    multiply(num1,num2){
+        return num1*num2;
+    },
 }
 const currentCalculation = document.querySelector(".calculation");
 const currentResult = document.querySelector(".result");
