@@ -35,6 +35,7 @@ const resetCalculator = () => {
     decimalJustPressed = false;
     chainCompute = false;
     justComputed = false;
+    flag = false;
 }
 
 const clickNumber = (event) => {
@@ -43,9 +44,11 @@ const clickNumber = (event) => {
     if(operatorJustPressed){
         currentResult.textContent = number;
         operatorJustPressed = false;
+        flag = false;
         return;
     }
-    if(justComputed){
+    if(flag && justComputed){
+        currentCalculation.textContent = "";
         currentResult.textContent = number;
         justComputed = false;
     }
@@ -56,6 +59,7 @@ const clickNumber = (event) => {
     else {
         currentResult.textContent += number;
     }
+    flag = true;
 }
 
 const deleteCharacter = () => {
@@ -157,8 +161,6 @@ const computeResult = (event) => {
         currentResult.textContent = result;
     }
 
-
-
     operatorFlag = false;
     justComputed = true;
 
@@ -207,5 +209,6 @@ let operatorJustPressed = false;
 let decimalJustPressed = false;
 let chainCompute = false;
 let justComputed = false;
+let flag = true;
 
 setEventListeners();
